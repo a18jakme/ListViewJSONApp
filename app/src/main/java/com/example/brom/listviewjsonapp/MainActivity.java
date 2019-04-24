@@ -8,6 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new FetchData().execute();
+
+        ArrayAdapter adapter=new ArrayAdapter(this,R.layout.list_item_textview,R.id.my_textview);
+        ListView myListView = (ListView)findViewById(R.id.my_listview);
+        myListView.setAdapter(adapter);
+
+
+
 
     }
 
@@ -119,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String o) {
+
             super.onPostExecute(o);
             Log.d("jacke","DataFetched:"+o);
             // This code executes after we have received our data. The String object o holds
@@ -126,6 +142,20 @@ public class MainActivity extends AppCompatActivity {
 
             // Implement a parsing code that loops through the entire JSON and creates objects
             // of our newly created Mountain class.
+
+            try {
+// Ditt JSON-objekt som Java
+                JSONArray json1 = new JSONArray(o);
+
+// När vi har ett JSONObjekt kan vi hämta ut dess beståndsdelar
+                JSONObject a = json1.getJSONObject(0);
+
+                int size = a.getInt("size");
+                Log.e("kalas",a.toString());
+
+            } catch (JSONException e) {
+                Log.e("kalas","E:"+e.getMessage());
+            }
         }
     }
 }
