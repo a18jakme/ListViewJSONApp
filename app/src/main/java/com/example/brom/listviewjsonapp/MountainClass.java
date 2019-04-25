@@ -43,7 +43,7 @@ public class MountainClass {
 
     @Override
     public String toString() {
-        return name+" "+location;
+        return name;
     }
 
 }

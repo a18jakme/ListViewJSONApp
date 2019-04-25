@@ -40,7 +40,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public ArrayList<MountainClass> bergslista = new ArrayList<MountainClass>();
     public ArrayAdapter<MountainClass> bergsadapter;
-    public ArrayList<MountainClass> bergslocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        new FetchData().execute();
-        bergslocation = new ArrayList<>();
+
+
         bergsadapter=new ArrayAdapter<MountainClass>(this,R.layout.list_item_textview,R.id.my_textview);
         ListView myListView = (ListView)findViewById(R.id.my_listview);
         myListView.setAdapter(bergsadapter);
@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Toast.makeText(getApplicationContext(),bergsadapter.getItem(position).info() ,Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if(id == (R.id.action_settings)){
+            new FetchData().execute();
+        }
+
         return super.onOptionsItemSelected(item);
 
 
@@ -167,19 +172,10 @@ public class MainActivity extends AppCompatActivity {
                     //String bergsnamn = a.getString("name");
                     Log.e("kalas",n.toString());
 
-                    MountainClass ls = new MountainClass(a.getString("location"));
-                    bergslocation.add(ls);
-
-
-
                 }
 
             } catch (JSONException e) {
                 Log.e("kalas","E:"+e.getMessage());
-            }
-
-            for(int x = 0; x < bergslista.size(); x++ ) {
-                Log.e("kalas", bergslista.get(x).toString());
             }
         }
     }
