@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 // Create a new class, Mountain, that can hold your JSON data
@@ -37,19 +38,19 @@ import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    public ArrayList<MountainClass> bergslista = new ArrayList<MountainClass>();
+    public ArrayAdapter<MountainClass> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         new FetchData().execute();
 
-        ArrayAdapter adapter=new ArrayAdapter(this,R.layout.list_item_textview,R.id.my_textview);
+        adapter=new ArrayAdapter<MountainClass>(this,R.layout.list_item_textview,R.id.my_textview);
         ListView myListView = (ListView)findViewById(R.id.my_listview);
         myListView.setAdapter(adapter);
-
-
 
 
     }
@@ -148,13 +149,22 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray json1 = new JSONArray(o);
 
 // När vi har ett JSONObjekt kan vi hämta ut dess beståndsdelar
-                JSONObject a = json1.getJSONObject(0);
+                for (int i = 0; i < json1.length(); i++){
+                    JSONObject a = json1.getJSONObject(i);
+                    MountainClass m = new MountainClass(a.getString("name"));
+                    adapter.add(m);
+                    //String bergsnamn = a.getString("name");
+                    Log.e("kalas",m.toString());
 
-                int size = a.getInt("size");
-                Log.e("kalas",a.toString());
+
+                }
 
             } catch (JSONException e) {
                 Log.e("kalas","E:"+e.getMessage());
+            }
+
+            for(int x = 0; x < bergslista.size(); x++ ) {
+                Log.e("kalas", bergslista.get(x).toString());
             }
         }
     }
