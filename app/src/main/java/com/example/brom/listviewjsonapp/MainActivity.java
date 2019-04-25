@@ -39,7 +39,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public ArrayList<MountainClass> bergslista = new ArrayList<MountainClass>();
-    public ArrayAdapter<MountainClass> adapter;
+    public ArrayAdapter<MountainClass> bergsadapter;
+    public ArrayList<MountainClass> bergslocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +49,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         new FetchData().execute();
-
-        adapter=new ArrayAdapter<MountainClass>(this,R.layout.list_item_textview,R.id.my_textview);
+        bergslocation = new ArrayList<>();
+        bergsadapter=new ArrayAdapter<MountainClass>(this,R.layout.list_item_textview,R.id.my_textview);
         ListView myListView = (ListView)findViewById(R.id.my_listview);
-        myListView.setAdapter(adapter);
+        myListView.setAdapter(bergsadapter);
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),bergsadapter.getItem(position).info() ,Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -151,10 +160,16 @@ public class MainActivity extends AppCompatActivity {
 // När vi har ett JSONObjekt kan vi hämta ut dess beståndsdelar
                 for (int i = 0; i < json1.length(); i++){
                     JSONObject a = json1.getJSONObject(i);
-                    MountainClass m = new MountainClass(a.getString("name"));
-                    adapter.add(m);
+                    MountainClass n = new MountainClass(a.getString("name"));
+                    n.setHeight(a.getInt("size"));
+                    n.setLocation(a.getString("location"));
+                    bergsadapter.add(n);
                     //String bergsnamn = a.getString("name");
-                    Log.e("kalas",m.toString());
+                    Log.e("kalas",n.toString());
+
+                    MountainClass ls = new MountainClass(a.getString("location"));
+                    bergslocation.add(ls);
+
 
 
                 }
