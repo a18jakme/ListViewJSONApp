@@ -46,9 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
+        new FetchData().execute();
 
         bergsadapter=new ArrayAdapter<MountainClass>(this,R.layout.list_item_textview,R.id.my_textview);
         ListView myListView = (ListView)findViewById(R.id.my_listview);
@@ -152,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
             super.onPostExecute(o);
             Log.d("jacke","DataFetched:"+o);
+            bergsadapter.clear();
             // This code executes after we have received our data. The String object o holds
             // the un-parsed JSON string or is null if we had an IOException during the fetch.
 
@@ -168,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     MountainClass n = new MountainClass(a.getString("name"));
                     n.setHeight(a.getInt("size"));
                     n.setLocation(a.getString("location"));
+
                     bergsadapter.add(n);
                     //String bergsnamn = a.getString("name");
                     Log.e("kalas",n.toString());
